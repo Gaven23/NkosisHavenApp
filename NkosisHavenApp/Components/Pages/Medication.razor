@@ -1,5 +1,36 @@
-﻿@page "/Medication"
+﻿@page
+@model MedicalApp.Pages.MedicationModel
+@{
+    ViewData["Title"] = "Medication Schedule";
+}
 
-<h3>Medication</h3>
+<h1>Medication Schedule</h1>
 
-
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Medication Name</th>
+                <th>Dosage</th>
+                <th>Time to Take</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medication in Model.Medications)
+            {
+                <tr>
+                    <td>@medication.Name</td>
+                    <td>@medication.Dosage</td>
+                    <td>@medication.TimeToTake.ToString("hh:mm tt")</td>
+                    <td>
+                        <form method="post">
+                            <input type="hidden" name="medicationId" value="@medication.Id" />
+                            <button type="submit" class="btn btn-success">Mark as Taken</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
