@@ -1,25 +1,104 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using NkosisHavenAppApi.Common;
+using NkosisHavenAppApi.Data;
+using NkosisHavenAppApi.Data.DataAccessors;
+using Serilog;
 
-// Add services to the container.
+namespace OutboundCommunication.Api;
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+public static class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    public static void Main(string[] args)
+    {
+        Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build())
+            .CreateLogger();
+
+        try
+        {
+            Log.Information("Starting application");
+
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddSerilog();
+
+            ConfigureServices(builder);
+
+            var app = builder.Build();
+
+            ConfigurePipeline(app);
+
+            app.Run();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Application terminated unexpectedly");
+            Environment.Exit(1);
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
+
+    private static void ConfigurePipeline(WebApplication app)
+    {
+        if (!app.Environment.IsDevelopment() || app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+        else
+        {
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+    }
+
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<AppSettings>(builder.Configuration);
+        var appSettings = builder.Configuration.Get<AppSettings>();
+        ConfigureData(builder.Services, appSettings?.ConnectionStrings?.DbConnection);
+        ConfigureHsts(builder.Services);
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+    }
+
+    private static void ConfigureData(IServiceCollection services, string? coffeeApplicationConnection)
+    {
+        if (coffeeApplicationConnection == null)
+        {
+            throw new ArgumentNullException(nameof(coffeeApplicationConnection));
+        }
+
+        services.AddDbContext<ApplicationDbContext>(options =>
+        {
+            options.UseSqlServer(coffeeApplicationConnection);
+        });
+
+        services.AddScoped<IDataStore, DataStore>();
+   
+    }
+
+    private static void ConfigureHsts(IServiceCollection services)
+    {
+        services.AddHsts(options =>
+        {
+            options.Preload = true;
+            options.IncludeSubDomains = true;
+            options.MaxAge = TimeSpan.FromSeconds(63072000);
+        });
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

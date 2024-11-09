@@ -14,6 +14,6 @@ namespace NkosisHavenAppApi.Common
 
     public class ConnectionStrings
     {
-        public string? TrackingDbConnection { get; set; }
+        public string? DbConnection { get; set; }
     }
 }

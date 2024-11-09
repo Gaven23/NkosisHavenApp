@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NkosisHavenAppApi.Common;
+using NkosisHavenAppApi.Data.Entities;
 using NkosisHavenAppApi.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace NkosisHavenAppApi.BusinessLogic.Services
 {
     public class PatientService
@@ -23,6 +18,26 @@ namespace NkosisHavenAppApi.BusinessLogic.Services
             _appSettings = appSettings;
         }
 
+        public async Task<IEnumerable<Patient>> GetArtefactsAsync(CancellationToken cancellationToken = default)
+        {
+            var artefacts = Enumerable.Empty<Patient>();
+
+            try
+            {
+                _logger.LogTrace("Retrieving Artefact data...");
+                artefacts = await _dataStore.GetEntitiesAsync<Data.Entities.Patient>(cancellationToken);
+                _logger.LogInformation($"{artefacts.Count()} Artefacts retrieved.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while retrieving Artefact data.");
+                return Enumerable.Empty<Patient>();
+            }
+
+            return artefacts;
+
+
+        }
     }
 
 }

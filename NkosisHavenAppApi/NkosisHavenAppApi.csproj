@@ -7,11 +7,17 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+		<PackageReference Include="Serilog" Version="4.0.1" />
+		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
+		<PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+	</ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\NkosisHavenAppApi.Common\NkosisHavenAppApi.Common.csproj" />
     <ProjectReference Include="..\NkosisHavenAppApi.Data\NkosisHavenAppApi.Data.csproj" />
   </ItemGroup>
 

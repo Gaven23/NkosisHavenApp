@@ -8,8 +8,37 @@ using System.Threading.Tasks;
 
 namespace NkosisHavenAppApi.Data.DataAccessors
 {
-	partial class DataStore 
-	{
-		
-	}
+    partial class DataStore
+    {
+        public async Task<IEnumerable<T>> GetEntitiesAsync<T>(CancellationToken cancellation = default) where T : class
+        {
+            return await _dbContext.Set<T>().ToListAsync(cancellation);
+        }
+
+        public async Task InsertEntityAsync<T>(T entity) where T : class
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _dbContext.Set<T>().Add(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateEntityAsync<T>(T entity) where T : class
+        {
+            if (entity == null)
+                throw new ArgumentNullException(nameof(entity));
+
+            _dbContext.Set<T>().Update(entity);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetEntitiesWithConditionAsync<T>(Expression<Func<T, bool>> predicate, CancellationToken cancellation = default, int take = default) where T : class
+        {
+            return await _dbContext.Set<T>()
+                .Where(predicate)
+                .Take(take)
+                .ToListAsync(cancellation);
+        }
+    }
 }
