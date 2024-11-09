@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using NkosisHavenAppApi.BusinessLogic.Services;
 using NkosisHavenAppApi.Common;
 using NkosisHavenAppApi.Data;
 using NkosisHavenAppApi.Data.DataAccessors;
@@ -89,7 +90,8 @@ public static class Program
         });
 
         services.AddScoped<IDataStore, DataStore>();
-   
+
+        services.AddScoped<PatientService>();
     }
 
     private static void ConfigureHsts(IServiceCollection services)
