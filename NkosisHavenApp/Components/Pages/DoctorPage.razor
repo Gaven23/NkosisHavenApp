@@ -1,0 +1,68 @@
+﻿@page "/DoctorPage"
+@using NkosisHavenApp.Models;
+
+@if (doctor == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!doctor.Any())
+{
+    <p><em>No doctors available.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>IDNumber</th>
+                <th>DateOfBirth</th>
+                <th>Email</th>
+                <th>PhoneNumber</th>
+                <th>PAddress</th>
+                <th>MedicalReason</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in doctor)
+            {
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Specialty</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>
+                        <!-- You can add actions like Edit, Delete here -->
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Doctor> doctor;
+
+    // Simulating data loading with a lifecycle method (OnInitializedAsync or OnAfterRenderAsync)
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulating data load (this would typically be an API call or database query)
+        await LoadDoctorsAsync();
+    }
+
+    private async Task LoadDoctorsAsync()
+    {
+        // Simulated delay for loading (replace with your actual data fetching logic)
+        await Task.Delay(1000);
+
+        // For demonstration, creating some dummy data
+        doctor = new List<Doctor>
+        {
+            new Doctor { FirstName = "John", LastName = "Doe", Specialty = "D123", Email = "johndoe@example.com", PhoneNumber = "123-456-7890" },
+            new Doctor { FirstName = "Jane", LastName = "Smith", Specialty = "D124", Email = "janesmith@example.com", PhoneNumber = "098-765-4321"}
+        };
+    }
+}

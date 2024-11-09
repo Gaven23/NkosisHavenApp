@@ -1,0 +1,51 @@
+﻿@page "/PatientPage"
+@using NkosisHavenApp.Models;
+
+@if (patient == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>FirstName</th>
+				<th>LastName</th>
+				<th>IDNumber</th>
+				<th>DateOfBirth</th>
+				<th>Email</th>
+				<th>PhoneNumber</th>
+				<th>PAddress</th>
+				<th>MedicalReason</th>
+				<th>PAddress</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in patient)
+			{
+
+				<tr>
+					<td> @item.FirstName </td>
+					<td> @item.LastName </td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+@code {
+	private List<Patient> patient;
+
+	protected override void OnInitialized()
+	{
+		patient = new List<Patient>
+		{
+			new Patient { FirstName = "John", LastName = "Doe" },
+			new Patient { FirstName = "Jane", LastName = "Smith" },
+			new Patient { FirstName = "Mary", LastName = "Johnson" },
+			new Patient { FirstName = "James", LastName = "Brown" },
+			new Patient { FirstName = "Emily", LastName = "Davis" }
+		};
+	}
+}

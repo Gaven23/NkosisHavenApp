@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NkosisHavenApp.Data
+namespace NkosisHavenApp.Components.Pages
 {
-    public class ApplicationDbContext
+    public partial class Diagnoses
     {
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NkosisHavenApp.Data.Entities
+namespace NkosisHavenApp.Components.Pages
 {
-    internal class MedicalAppointment
+	public partial class Appointment
     {
+
     }
 }
