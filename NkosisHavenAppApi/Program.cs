@@ -92,6 +92,8 @@ public static class Program
         services.AddScoped<IDataStore, DataStore>();
 
         services.AddScoped<PatientService>();
+        services.AddScoped<DiagnosesService>();
+        services.AddScoped<AppointmentService>();
     }
 
     private static void ConfigureHsts(IServiceCollection services)

@@ -9,7 +9,6 @@ namespace NkosisHavenAppApi.Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-
         private readonly PatientService _patientService;
 
         PatientController(PatientService patientService)
@@ -26,7 +25,7 @@ namespace NkosisHavenAppApi.Controllers
         }
 
         /// <summary>
-        /// Adds Patients.        
+        /// Adds Patients        
         /// </summary>
         /// <returns>
         /// </returns>
@@ -39,7 +38,8 @@ namespace NkosisHavenAppApi.Controllers
 
             await _patientService.AddPatientAsync(patient);
 
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
+        
     }
 }
