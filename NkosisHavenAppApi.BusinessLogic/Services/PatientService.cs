@@ -18,26 +18,53 @@ namespace NkosisHavenAppApi.BusinessLogic.Services
             _appSettings = appSettings;
         }
 
-        public async Task<IEnumerable<Patient>> GetArtefactsAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Patient>> GetPatientsAsync(CancellationToken cancellationToken = default)
         {
-            var artefacts = Enumerable.Empty<Patient>();
+            var patients = Enumerable.Empty<Patient>();
 
             try
             {
-                _logger.LogTrace("Retrieving Artefact data...");
-                artefacts = await _dataStore.GetEntitiesAsync<Data.Entities.Patient>(cancellationToken);
-                _logger.LogInformation($"{artefacts.Count()} Artefacts retrieved.");
+                _logger.LogTrace("Retrieving Patients data...");
+                patients = await _dataStore.GetEntitiesAsync<Data.Entities.Patient>(cancellationToken);
+                _logger.LogInformation($"{patients.Count()} Patients retrieved.");
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while retrieving Artefact data.");
+                _logger.LogError(ex, "An error occurred while retrieving Patients data.");
                 return Enumerable.Empty<Patient>();
             }
 
-            return artefacts;
-
+            return patients;
 
         }
+
+        public async Task AddPatientAsync(Patient patient)
+        {
+            try
+            {
+                _logger.LogTrace("Adding new Patient...");
+
+                if (patient == null)
+                {
+                    _logger.LogWarning("Cannot add a null patient.");
+                    throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
+                }
+
+                await _dataStore.InsertEntityAsync(patient);
+
+                _logger.LogInformation($"Patient {patient.FirstName} {patient.LastName} added successfully.");
+            }
+            catch (ArgumentNullException ex)
+            {
+
+                _logger.LogError(ex, "Patient data is null.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding the patient.");
+            }
+        }
+
     }
 
 }

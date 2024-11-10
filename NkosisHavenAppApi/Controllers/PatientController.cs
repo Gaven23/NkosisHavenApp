@@ -22,30 +22,24 @@ namespace NkosisHavenAppApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<Patient>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            return Ok (await  _patientService.GetArtefactsAsync(cancellationToken));
+            return Ok (await  _patientService.GetPatientsAsync(cancellationToken));
         }
 
-        [HttpPost()]
-        [ProducesResponseType(typeof(IEnumerable<Patient>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Post(CancellationToken cancellationToken)
+        /// <summary>
+        /// Adds Patients.        
+        /// </summary>
+        /// <returns>
+        /// </returns>
+        [HttpPost("PostPatients")]
+        public async Task<IActionResult> Create(Patient patient)
         {
-            return null;
+
+            if (patient is null)
+                return BadRequest("A patient details must be present");
+
+            await _patientService.AddPatientAsync(patient);
+
+            return RedirectToAction(nameof(Index));
         }
-
-        [HttpPut()]
-        [ProducesResponseType(typeof(IEnumerable<Patient>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Edit(CancellationToken cancellationToken)
-        {
-            return null;
-        }
-
-
-        [HttpDelete()]
-        [ProducesResponseType(typeof(IEnumerable<Patient>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete(CancellationToken cancellationToken)
-        {
-            return null;
-        }
-
     }
 }
