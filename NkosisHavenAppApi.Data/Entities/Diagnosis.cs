@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace NkosisHavenAppApi.Data.Entities
 {
-	public class Appointment
+	public class Diagnosis
 	{
+		public int DiagnosisId { get; set; }
 		public int AppointmentId { get; set; }
 		public int PatientId { get; set; }
-		public int DoctorId { get; set; }
-		public DateTime AppointmentDate { get; set; }
-		public string AppointmentReason { get; set; }
-		public string AppointmentStatus { get; set; }
+		public string DiagnosisDetails { get; set; }
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
+
 	}
 }

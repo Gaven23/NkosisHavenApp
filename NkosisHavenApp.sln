@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NkosisHavenAppApi.Data", "N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NkosisHavenAppApi.Common", "NkosisHavenAppApi.Common\NkosisHavenAppApi.Common.csproj", "{88E86312-397C-4979-A5DD-65E44772DA77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NkosisHavenAppApi.BusinessLogic", "NkosisHavenAppApi.BusinessLogic\NkosisHavenAppApi.BusinessLogic.csproj", "{5F337956-59BE-4E00-9275-7F805B9F9B2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NkosisHavenAppApi.BusinessLogic", "NkosisHavenAppApi.BusinessLogic\NkosisHavenAppApi.BusinessLogic.csproj", "{5F337956-59BE-4E00-9275-7F805B9F9B2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

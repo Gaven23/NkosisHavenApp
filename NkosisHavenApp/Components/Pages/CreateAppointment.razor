@@ -1,0 +1,96 @@
+﻿@page "/appointment/Create"
+@using NkosisHavenAppApi.Data
+@using NkosisHavenAppApi.Data.Entities
+@using NkosisHavenAppApi.BusinessLogic.Services
+@inject AppointmentService _appointmentService
+@inject Microsoft.AspNetCore.Components.NavigationManager navigation
+
+<h3>Add Appointment</h3>
+
+<div class="row">
+    <div class="col-md-5">
+        <EditForm Model="appointment" OnValidSubmit="SaveAppointment">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="did-floating-label-content">
+                <input class="did-floating-input" type="number" placeholder=" " @bind="appointment.PatientId" required>
+                <label class="did-floating-label">Patient ID</label>
+                <ValidationMessage For="@(() => appointment.PatientId)" />
+            </div>
+
+            <div class="did-floating-label-content">
+                <input class="did-floating-input" type="number" placeholder=" " @bind="appointment.DoctorId" required>
+                <label class="did-floating-label">Doctor ID</label>
+                <ValidationMessage For="@(() => appointment.DoctorId)" />
+            </div>
+
+            <div class="did-floating-label-content">
+                <input class="did-floating-input" type="datetime-local" placeholder=" " @bind="appointment.AppointmentDate" required>
+                <label class="did-floating-label">Appointment Date</label>
+                <ValidationMessage For="@(() => appointment.AppointmentDate)" />
+            </div>
+
+            <div class="did-floating-label-content">
+                <input class="did-floating-input" type="text" placeholder=" " @bind="appointment.AppointmentReason" required>
+                <label class="did-floating-label">Appointment Reason</label>
+                <ValidationMessage For="@(() => appointment.AppointmentReason)" />
+            </div>
+
+            <div class="did-floating-label-content">
+                <select class="did-floating-input" @bind="appointment.AppointmentStatus" required>
+                    <option value="Pending">Pending</option>
+                    <option value="Scheduled">Scheduled</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+                <label class="did-floating-label">Status</label>
+                <ValidationMessage For="@(() => appointment.AppointmentStatus)" />
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="button-outline button-outline-info">Save</button>
+                <button type="button" class="button-outline button-outline-danger" style="margin-left:20px;" @onclick='() => navigation.NavigateTo("/")'>Cancel</button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div class="alert alert-danger">@errorMessage</div>
+            }
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private NkosisHavenAppApi.Data.Entities.Appointment appointment = new NkosisHavenAppApi.Data.Entities.Appointment();
+    private string errorMessage;
+
+    private async Task SaveAppointment()
+    {
+        errorMessage = null;  // Clear any previous error message
+
+        // Ensure the appointment date is in the future
+        if (appointment.AppointmentDate <= DateTime.Now)
+        {
+            errorMessage = "Please select a future date for the appointment.";
+            return;
+        }
+
+        try
+        {
+            bool result = await _appointmentService.AddAppointmentAsync(appointment);
+            if (result)
+            {
+                navigation.NavigateTo("/");
+            }
+            else
+            {
+                errorMessage = "Failed to save appointment. Please try again.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An error occurred: {ex.Message}";
+        }
+    }
+}

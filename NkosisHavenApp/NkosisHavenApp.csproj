@@ -65,7 +65,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NkosisHavenApp.BusinessLogic\NkosisHavenApp.BusinessLogic.csproj" />
       <ProjectReference Include="..\NkosisHavenApp.Data\NkosisHavenApp.Data.csproj" />
+      <ProjectReference Include="..\NkosisHavenAppApi.BusinessLogic\NkosisHavenAppApi.BusinessLogic.csproj" />
     </ItemGroup>
 
 </Project>

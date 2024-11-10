@@ -1,5 +1,64 @@
 ﻿@page "/MedicationPage"
+@using NkosisHavenAppApi.Data.Entities
 
 <h3>Medication</h3>
 
+@if (medications == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!medications.Any())
+{
+    <p><em>No medications available.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Medication ID</th>
+                <th>Diagnosis ID</th>
+                <th>Patient ID</th>
+                <th>Medication Name</th>
+                <th>Dosage</th>
+                <th>Instructions</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in medications)
+            {
+                <tr>
+                    <td>@item.MedicationId</td>
+                    <td>@item.DiagnosisId</td>
+                    <td>@item.PatientId</td>
+                    <td>@item.MedicationName</td>
+                    <td>@item.Dosage</td>
+                    <td>@item.Instructions</td>
+                    <td>@item.CreatedDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
+@code {
+    private List<NkosisHavenAppApi.Data.Entities.Medication> medications;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadMedicationsAsync();
+    }
+
+    private async Task LoadMedicationsAsync()
+    {
+        await Task.Delay(1000);
+
+        // Dummy data to simulate loading medications
+        medications = new List<NkosisHavenAppApi.Data.Entities.Medication>
+        {
+            new NkosisHavenAppApi.Data.Entities.Medication { MedicationId = 1, DiagnosisId = 301, PatientId = 101, MedicationName = "Amoxicillin", Dosage = "500mg", Instructions = "Take one tablet twice daily" },
+            new NkosisHavenAppApi.Data.Entities.Medication { MedicationId = 2, DiagnosisId = 302, PatientId = 102, MedicationName = "Ibuprofen", Dosage = "200mg", Instructions = "Take one tablet as needed for pain" }
+        };
+    }
+}

@@ -1,5 +1,65 @@
 ﻿@page "/AppointmentPage"
 
-@code {
+@using NkosisHavenApp.Models;
 
+@if (appointments == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!appointments.Any())
+{
+    <p><em>No appointments available.</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Appointment ID</th>
+                <th>Patient ID</th>
+                <th>Doctor ID</th>
+                <th>Appointment Date</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Created Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in appointments)
+            {
+                <tr>
+                    <td>@item.AppointmentId</td>
+                    <td>@item.PatientId</td>
+                    <td>@item.DoctorId</td>
+                    <td>@item.AppointmentDate.ToShortDateString()</td>
+                    <td>@item.AppointmentReason</td>
+                    <td>@item.AppointmentStatus</td>
+                    <td>@item.CreatedDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Models.Appointment> appointments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAppointmentAsync();
+    }
+
+    private async Task LoadAppointmentAsync()
+    {
+        await Task.Delay(1000);
+
+        // Dummy data to simulate loading appointments
+        appointments = new List<NkosisHavenApp.Models.Appointment>
+        {
+
+            new Models.Appointment { AppointmentId = 1, PatientId = 101, DoctorId = 201, AppointmentDate = DateTime.Now.AddDays(1), AppointmentReason = "Routine Checkup", AppointmentStatus = "Scheduled" },
+            new Models.Appointment { AppointmentId = 2, PatientId = 102, DoctorId = 202, AppointmentDate = DateTime.Now.AddDays(2), AppointmentReason = "Follow-up", AppointmentStatus = "Scheduled" }
+
+        };
+    }
 }

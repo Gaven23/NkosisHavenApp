@@ -1,11 +1,12 @@
 ﻿@page "/DoctorPage"
-@using NkosisHavenApp.Models;
 
-@if (doctor == null)
+@using NkosisHavenAppApi.Data.Entities
+
+@if (doctors == null)
 {
     <p><em>Loading...</em></p>
 }
-else if (!doctor.Any())
+else if (!doctors.Any())
 {
     <p><em>No doctors available.</em></p>
 }
@@ -14,29 +15,24 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>IDNumber</th>
-                <th>DateOfBirth</th>
+                <th>Doctor ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Specialty</th>
                 <th>Email</th>
-                <th>PhoneNumber</th>
-                <th>PAddress</th>
-                <th>MedicalReason</th>
-                <th></th>
+                <th>Phone Number</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in doctor)
+            @foreach (var doctor in doctors)
             {
                 <tr>
-                    <td>@item.FirstName</td>
-                    <td>@item.LastName</td>
-                    <td>@item.Specialty</td>
-                    <td>@item.Email</td>
-                    <td>@item.PhoneNumber</td>
-                    <td>
-                        <!-- You can add actions like Edit, Delete here -->
-                    </td>
+                    <td>@doctor.DoctorId</td>
+                    <td>@doctor.FirstName</td>
+                    <td>@doctor.LastName</td>
+                    <td>@doctor.Specialty</td>
+                    <td>@doctor.Email</td>
+                    <td>@doctor.PhoneNumber</td>
                 </tr>
             }
         </tbody>
@@ -44,25 +40,25 @@ else
 }
 
 @code {
-    private List<Doctor> doctor;
+    private List<Doctor> doctors;
 
-    // Simulating data loading with a lifecycle method (OnInitializedAsync or OnAfterRenderAsync)
     protected override async Task OnInitializedAsync()
     {
-        // Simulating data load (this would typically be an API call or database query)
         await LoadDoctorsAsync();
     }
 
     private async Task LoadDoctorsAsync()
     {
-        // Simulated delay for loading (replace with your actual data fetching logic)
-        await Task.Delay(1000);
+        await Task.Delay(1000); // Simulate loading time
 
-        // For demonstration, creating some dummy data
-        doctor = new List<Doctor>
+        // Dummy data to simulate loading doctors
+        doctors = new List<Doctor>
         {
-            new Doctor { FirstName = "John", LastName = "Doe", Specialty = "D123", Email = "johndoe@example.com", PhoneNumber = "123-456-7890" },
-            new Doctor { FirstName = "Jane", LastName = "Smith", Specialty = "D124", Email = "janesmith@example.com", PhoneNumber = "098-765-4321"}
+            new Doctor { DoctorId = 1, FirstName = "John", LastName = "Doe", Specialty = "Cardiology", Email = "johndoe@example.com", PhoneNumber = "081-555-1234" },
+            new Doctor { DoctorId = 2, FirstName = "Jane", LastName = "Smith", Specialty = "Neurology", Email = "janesmith@example.com", PhoneNumber = "081-555-5678" }
         };
     }
+
+
+
 }

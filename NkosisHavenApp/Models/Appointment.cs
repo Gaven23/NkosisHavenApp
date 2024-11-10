@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace NkosisHavenApp.Models
 {
 	public class Appointment
@@ -16,4 +17,5 @@ namespace NkosisHavenApp.Models
 		public string AppointmentStatus { get; set; } = "Pending";
 		public DateTime CreatedDate { get; set; } = DateTime.Now;
 	}
+
 }
