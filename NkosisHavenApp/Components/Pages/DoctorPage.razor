@@ -1,11 +1,11 @@
 ﻿@page "/DoctorPage"
 @using NkosisHavenApp.Models;
-
-@if (doctor == null)
+@inject NkosisHavenApp.Data.DoctorDataService _service
+@if (doctors == null)
 {
     <p><em>Loading...</em></p>
 }
-else if (!doctor.Any())
+else if (!doctors.Any())
 {
     <p><em>No doctors available.</em></p>
 }
@@ -16,17 +16,14 @@ else
             <tr>
                 <th>FirstName</th>
                 <th>LastName</th>
-                <th>IDNumber</th>
-                <th>DateOfBirth</th>
+                <th>Specialty</th>
                 <th>Email</th>
                 <th>PhoneNumber</th>
-                <th>PAddress</th>
-                <th>MedicalReason</th>
-                <th></th>
+                
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in doctor)
+            @foreach (var item in doctors)
             {
                 <tr>
                     <td>@item.FirstName</td>
@@ -42,27 +39,18 @@ else
         </tbody>
     </table>
 }
-
 @code {
-    private List<Doctor> doctor;
+    private IEnumerable<Doctor> doctors;
 
-    // Simulating data loading with a lifecycle method (OnInitializedAsync or OnAfterRenderAsync)
+
     protected override async Task OnInitializedAsync()
     {
-        // Simulating data load (this would typically be an API call or database query)
-        await LoadDoctorsAsync();
+        await LoadAppointmentAsync();
     }
 
-    private async Task LoadDoctorsAsync()
+    private async Task LoadAppointmentAsync()
     {
-        // Simulated delay for loading (replace with your actual data fetching logic)
-        await Task.Delay(1000);
+        doctors = await _service.Get<Doctor>();
 
-        // For demonstration, creating some dummy data
-        doctor = new List<Doctor>
-        {
-            new Doctor { FirstName = "John", LastName = "Doe", Specialty = "D123", Email = "johndoe@example.com", PhoneNumber = "123-456-7890" },
-            new Doctor { FirstName = "Jane", LastName = "Smith", Specialty = "D124", Email = "janesmith@example.com", PhoneNumber = "098-765-4321"}
-        };
     }
 }

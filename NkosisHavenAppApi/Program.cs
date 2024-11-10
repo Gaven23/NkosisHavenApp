@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 using NkosisHavenAppApi.BusinessLogic.Services;
 using NkosisHavenAppApi.Common;
 using NkosisHavenAppApi.Data;
@@ -72,6 +73,7 @@ public static class Program
         var appSettings = builder.Configuration.Get<AppSettings>();
         ConfigureData(builder.Services, appSettings?.ConnectionStrings?.DbConnection);
         ConfigureHsts(builder.Services);
+        ConfigureCors(builder.Services, appSettings);
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -94,6 +96,21 @@ public static class Program
         services.AddScoped<PatientService>();
         services.AddScoped<DiagnosesService>();
         services.AddScoped<AppointmentService>();
+        services.AddScoped<DoctorService>();
+    }
+
+    private static void ConfigureCors(IServiceCollection services, AppSettings appSettings)
+    {
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(policyBuilder =>
+            {
+                policyBuilder.AllowCredentials().AllowAnyHeader().AllowAnyMethod()
+                             .WithExposedHeaders(HeaderNames.ContentDisposition);
+
+                policyBuilder.WithOrigins(appSettings.AllowedOrigins.ToArray());
+            });
+        });
     }
 
     private static void ConfigureHsts(IServiceCollection services)

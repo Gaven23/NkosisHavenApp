@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NkosisHavenAppApi.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,11 @@ namespace NkosisHavenAppApi.Data.DataAccessors
 {
     partial class DataStore
     {
+
+        public async Task<IEnumerable<Patient>> GetOrdersAsync(CancellationToken cancellationToken = default)
+        {
+            return await _dbContext.Patient.ToListAsync(cancellationToken);
+        }
         public async Task<IEnumerable<T>> GetEntitiesAsync<T>(CancellationToken cancellation = default) where T : class
         {
             return await _dbContext.Set<T>().ToListAsync(cancellation);

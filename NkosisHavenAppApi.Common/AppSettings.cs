@@ -8,6 +8,7 @@ namespace NkosisHavenAppApi.Common
 {
     public class AppSettings
     {
+        public IEnumerable<string> AllowedOrigins { get; set; }
         public ConnectionStrings? ConnectionStrings { get; set; }
         public string FilePath { get; set; }
     }

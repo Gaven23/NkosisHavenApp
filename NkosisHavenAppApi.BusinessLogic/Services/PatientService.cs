@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using NkosisHavenAppApi.Common;
 using NkosisHavenAppApi.Data.Entities;
 using NkosisHavenAppApi.Data;
+using Microsoft.Data.SqlClient;
 namespace NkosisHavenAppApi.BusinessLogic.Services
 {
     public class PatientService
@@ -21,18 +22,8 @@ namespace NkosisHavenAppApi.BusinessLogic.Services
         public async Task<IEnumerable<Patient>> GetPatientsAsync(CancellationToken cancellationToken = default)
         {
             var patients = Enumerable.Empty<Patient>();
-
-            try
-            {
-                _logger.LogTrace("Retrieving Patients data...");
-                patients = await _dataStore.GetEntitiesAsync<Data.Entities.Patient>(cancellationToken);
-                _logger.LogInformation($"{patients.Count()} Patients retrieved.");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while retrieving Patients data.");
-                return Enumerable.Empty<Patient>();
-            }
+          
+            patients = await _dataStore.GetEntitiesAsync<Data.Entities.Patient>(cancellationToken);
 
             return patients;
 
@@ -51,12 +42,9 @@ namespace NkosisHavenAppApi.BusinessLogic.Services
                 }
 
                 await _dataStore.InsertEntityAsync(patient);
-
-                _logger.LogInformation($"Patient {patient.FirstName} {patient.LastName} added successfully.");
             }
             catch (ArgumentNullException ex)
             {
-
                 _logger.LogError(ex, "Patient data is null.");
             }
             catch (Exception ex)
@@ -64,7 +52,5 @@ namespace NkosisHavenAppApi.BusinessLogic.Services
                 _logger.LogError(ex, "An error occurred while adding the patient.");
             }
         }
-
     }
-
 }
