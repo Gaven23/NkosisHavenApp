@@ -1,40 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NkosisHavenAppApi.BusinessLogic.Services;
 using NkosisHavenAppApi.Data.Entities;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NkosisHavenAppApi.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class DiagnosesController : ControllerBase
     {
         private readonly DiagnosesService _diagnosesService;
 
-        DiagnosesController(DiagnosesService diagnosesService)
+        public DiagnosesController(DiagnosesService diagnosesService)
         {
             _diagnosesService = diagnosesService;
         }
 
-
-        [HttpGet()]
-        [ProducesResponseType(typeof(IEnumerable<Diagnosis>), StatusCodes.Status200OK)]
+        /// <summary>
+        /// Gets the list of all diagnoses.
+        /// </summary>
+        /// <param name="cancellationToken">Cancellation token for the operation.</param>
+        /// <returns>A list of diagnoses</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<Diagnoses>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            return Ok(await _diagnosesService.GetDiagnosisAsync(cancellationToken));
+            var diagnoses = await _diagnosesService.GetDiagnosisAsync(cancellationToken);
+            return Ok(diagnoses);
         }
 
         /// <summary>
-        /// Adds Diagnosis        
+        /// Adds a new diagnosis.
         /// </summary>
-        /// <returns>
-        /// </returns>
+        /// <param name="diagnosis">The diagnosis details to be added.</param>
+        /// <returns>Returns the status of the operation.</returns>
         [HttpPost("PostDiagnosis")]
-        public async Task<IActionResult> Create(Diagnosis diagnosis)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Create(Diagnoses diagnosis)
         {
-
             if (diagnosis is null)
-                return BadRequest("A Diagnosis details must be present");
+            {
+                return BadRequest("A Diagnosis details must be present.");
+            }
 
             await _diagnosesService.AddDiagnosisAsync(diagnosis);
 

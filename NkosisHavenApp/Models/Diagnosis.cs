@@ -1,6 +1,7 @@
 ﻿namespace NkosisHavenApp.Models
 {
     public class Diagnosis
+
 	{
 		public int DiagnosisId { get; set; }
 		public int AppointmentId { get; set; }

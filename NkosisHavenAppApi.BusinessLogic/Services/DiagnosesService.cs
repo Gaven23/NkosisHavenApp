@@ -18,27 +18,27 @@ namespace NkosisHavenAppApi.BusinessLogic.Services
             _appSettings = appSettings;
         }
 
-        public async Task<IEnumerable<Diagnosis>> GetDiagnosisAsync(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<Diagnoses>> GetDiagnosisAsync(CancellationToken cancellationToken = default)
         {
-            var diagnosis = Enumerable.Empty<Diagnosis>();
+            var diagnosis = Enumerable.Empty<Diagnoses>();
 
             try
             {
                 _logger.LogTrace("Retrieving diagnosis data...");
-                diagnosis = await _dataStore.GetEntitiesAsync<Data.Entities.Diagnosis>(cancellationToken);
+                diagnosis = await _dataStore.GetEntitiesAsync<Data.Entities.Diagnoses>(cancellationToken);
                 _logger.LogInformation($"{diagnosis.Count()} diagnosis retrieved.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while retrieving diagnosis data.");
-                return Enumerable.Empty<Diagnosis>();
+                return Enumerable.Empty<Diagnoses>();
             }
 
             return diagnosis;
 
         }
 
-        public async Task AddDiagnosisAsync(Diagnosis diagnosis)
+        public async Task AddDiagnosisAsync(Diagnoses diagnosis)
         {
             try
             {

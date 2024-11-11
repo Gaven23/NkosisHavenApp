@@ -18,20 +18,18 @@ namespace NkosisHavenApp
                 });
 
             // Register services here
-            builder.Services.AddSingleton<IDataStore, DataService>(); // Make sure DataService implements IDataStore
-            builder.Services.AddSingleton<AppointmentDataService>(); // Make sure AppointmentDataService implements IAppointment
-            builder.Services.AddSingleton<DoctorDataService>(); // Make sure AppointmentDataService implements IAppointment
-
+            builder.Services.AddSingleton<IDataStore, DataService>();
+            builder.Services.AddSingleton<AppointmentDataService>(); 
+            builder.Services.AddSingleton<DoctorDataService>();
+            builder.Services.AddSingleton<MedicationDataService>();
+            builder.Services.AddSingleton<DiagnosesDataService>();
             // Register Blazor WebView services
             builder.Services.AddMauiBlazorWebView();
 
-#if DEBUG
-            // Add Blazor Developer tools and debugging
             builder.Services.AddBlazorWebViewDeveloperTools();
             
             // Configure logging to output to debug window
             builder.Logging.AddDebug();
-#endif
 
             return builder.Build();
         }

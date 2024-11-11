@@ -10,7 +10,7 @@ namespace NkosisHavenAppApi.Data
 		internal DbSet<Patient> Patient { get; set; }
 		internal DbSet<Appointment> Appointment { get; set; }
         internal DbSet<Doctor> Doctors { get; set; }
-        internal DbSet<Diagnosis> Diagnosis { get; set; }
+        internal DbSet<Diagnoses> Diagnoses { get; set; }
         internal DbSet<Medication> Medications { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -29,7 +29,7 @@ namespace NkosisHavenAppApi.Data
                 entity.HasKey(e => e.DoctorId);
             });
 
-            modelBuilder.Entity<Diagnosis>(entity =>
+            modelBuilder.Entity<Diagnoses>(entity =>
             {
                 entity.HasKey(e => e.DiagnosisId);
             });

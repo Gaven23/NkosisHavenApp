@@ -97,6 +97,7 @@ public static class Program
         services.AddScoped<DiagnosesService>();
         services.AddScoped<AppointmentService>();
         services.AddScoped<DoctorService>();
+        services.AddScoped<MedicationService>();
     }
 
     private static void ConfigureCors(IServiceCollection services, AppSettings appSettings)
