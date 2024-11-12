@@ -1,7 +1,6 @@
 ﻿@page "/MedicationPage"
-@using NkosisHavenAppApi.Data.Entities
-
-<h3>Medication</h3>
+@using NkosisHavenAppApi.BusinessLogic.Services;
+@inject MedicationService _medicationService
 
 @if (medications == null)
 {
@@ -43,7 +42,8 @@ else
 }
 
 @code {
-    private List<NkosisHavenAppApi.Data.Entities.Medication> medications;
+
+    private IEnumerable<NkosisHavenAppApi.Data.Entities.Medication> medications;
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,13 +52,6 @@ else
 
     private async Task LoadMedicationsAsync()
     {
-        await Task.Delay(1000);
-
-        // Dummy data to simulate loading medications
-        medications = new List<NkosisHavenAppApi.Data.Entities.Medication>
-        {
-            new NkosisHavenAppApi.Data.Entities.Medication { MedicationId = 1, DiagnosisId = 301, PatientId = 101, MedicationName = "Amoxicillin", Dosage = "500mg", Instructions = "Take one tablet twice daily" },
-            new NkosisHavenAppApi.Data.Entities.Medication { MedicationId = 2, DiagnosisId = 302, PatientId = 102, MedicationName = "Ibuprofen", Dosage = "200mg", Instructions = "Take one tablet as needed for pain" }
-        };
+        medications = await _medicationService.GetMedicationAsync();
     }
 }

@@ -21,7 +21,7 @@ namespace NkosisHavenAppApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<Appointment>), StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
-            return Ok(await _appointmentService.GetArtefactsAsync(cancellationToken));
+            return Ok(await _appointmentService.GetAppointmentsAsync(0,cancellationToken));
         }
 
         [HttpPost()]

@@ -1,6 +1,6 @@
 ﻿@page "/AppointmentPage"
-
-@using NkosisHavenApp.Models;
+@using NkosisHavenAppApi.BusinessLogic.Services;
+@inject AppointmentService _appointmentService
 
 @if (appointments == null)
 {
@@ -42,7 +42,7 @@ else
 }
 
 @code {
-    private List<Models.Appointment> appointments;
+    private IEnumerable<Models.Appointment> appointments;
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,15 +51,6 @@ else
 
     private async Task LoadAppointmentAsync()
     {
-        await Task.Delay(1000);
-
-        // Dummy data to simulate loading appointments
-        appointments = new List<NkosisHavenApp.Models.Appointment>
-        {
-
-            new Models.Appointment { AppointmentId = 1, PatientId = 101, DoctorId = 201, AppointmentDate = DateTime.Now.AddDays(1), AppointmentReason = "Routine Checkup", AppointmentStatus = "Scheduled" },
-            new Models.Appointment { AppointmentId = 2, PatientId = 102, DoctorId = 202, AppointmentDate = DateTime.Now.AddDays(2), AppointmentReason = "Follow-up", AppointmentStatus = "Scheduled" }
-
-        };
+        appointments = await _appointmentService.GetAppointmentsAsync();
     }
 }
